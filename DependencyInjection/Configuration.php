@@ -32,6 +32,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('license_key')->defaultValue(ini_get('newrelic.license'))->end()
                 ->scalarNode('application_name')->defaultValue(ini_get('newrelic.appname'))->end()
                 ->scalarNode('xmit')->defaultValue(false)->end()
+                ->booleanNode('handle_sub_requests')->defaultValue(false)->end()
                 ->scalarNode('logging')
                     ->defaultFalse()
                     ->validate()

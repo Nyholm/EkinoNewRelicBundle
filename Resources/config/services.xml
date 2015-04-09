@@ -21,6 +21,7 @@
             <argument>%ekino.new_relic.request_listener.ignored_paths%</argument>
             <argument />
             <argument />
+            <argument />
         </service>
 
         <service id="ekino.new_relic.exception_listener" class="Ekino\Bundle\NewRelicBundle\Listener\ExceptionListener">

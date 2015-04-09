@@ -35,21 +35,35 @@ class RequestListener
     protected $symfonyCache;
 
     /**
+     * @var bool handleSubRequest
+     */
+    protected $handleSubRequest;
+
+    /**
      * @param NewRelic                           $newRelic
      * @param NewRelicInteractorInterface        $interactor
      * @param array                              $ignoreRoutes
      * @param array                              $ignoredPaths
      * @param TransactionNamingStrategyInterface $transactionNamingStrategy
      * @param boolean                            $symfonyCache
+     * @param boolean                            $handleSubRequest
      */
-    public function __construct(NewRelic $newRelic, NewRelicInteractorInterface $interactor, array $ignoreRoutes, array $ignoredPaths, TransactionNamingStrategyInterface $transactionNamingStrategy, $symfonyCache = false)
-    {
-        $this->interactor    = $interactor;
-        $this->newRelic      = $newRelic;
+    public function __construct(
+        NewRelic $newRelic,
+        NewRelicInteractorInterface $interactor,
+        array $ignoreRoutes,
+        array $ignoredPaths,
+        TransactionNamingStrategyInterface $transactionNamingStrategy,
+        $symfonyCache = false,
+        $handleSubRequest = false
+    ) {
+        $this->interactor = $interactor;
+        $this->newRelic = $newRelic;
         $this->ignoredRoutes = $ignoreRoutes;
-        $this->ignoredPaths  = $ignoredPaths;
+        $this->ignoredPaths = $ignoredPaths;
         $this->transactionNamingStrategy = $transactionNamingStrategy;
-        $this->symfonyCache      = $symfonyCache;
+        $this->symfonyCache = $symfonyCache;
+        $this->handleSubRequest = $handleSubRequest;
     }
 
     /**
@@ -59,7 +73,7 @@ class RequestListener
     {
         $request = $event->getRequest();
 
-        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        if (!$this->handleSubRequest && $event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
             return;
         }
         if (in_array($request->get('_route'), $this->ignoredRoutes)) {

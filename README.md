@@ -115,6 +115,7 @@ ekino_new_relic:
     ignored_routes: []                    # No transaction recorded for this routes
     ignored_paths: []                     # No transaction recorded for this paths
     ignored_commands: []                  # No transaction recorded for this commands (background tasks)
+    handle_sub_requests: false            # If false, all sub request (ESI, KernelException, Twig::render(), Controller::forward() etc) will be ignored.
 ```
 
 ## Enhanced RUM instrumentation
